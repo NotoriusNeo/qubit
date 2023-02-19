@@ -2,6 +2,9 @@ name: Build LibPQCrypto
 
 on:
   workflow_dispatch:
+  
+env:
+  version: $(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
 
 jobs:
   build-and-test:
@@ -13,7 +16,6 @@ jobs:
       - name: Download / unpack and build libpqcrypto
         run: |
           cd $HOME
-          version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
           curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
           tar -xf libpqcrypto-$version.tar.gz
           ln -s libpqcrypto-$version link-build
@@ -21,16 +23,16 @@ jobs:
           cd libpqcrypto-$version
           ./do
 
-      - name: Create tarball of compiled code
+      - name: Create zip archive of compiled code
         if: success()
         run: |
-          version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
-          tar -czf libpqcrypto-$version.tar.gz $HOME/libpqcrypto-$version
-          mv libpqcrypto-$version.tar.gz ${{ github.workspace }}
+          cd $HOME
+          zip -r libpqcrypto-$version.zip libpqcrypto-$version
+          mv libpqcrypto-$version.zip ${{ github.workspace }}
 
       - name: Upload compiled code as artifact
         if: success()
         uses: actions/upload-artifact@v3.1.2
         with:
           name: libpqcrypto-artifact
-          path: ${{ github.workspace }}/libpqcrypto-$version.tar.gz
+          path: ${{ github.workspace }}/libpqcrypto-$version.zip
