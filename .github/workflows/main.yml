@@ -23,7 +23,7 @@ jobs:
 
       - name: Compile, test, and install libpqcrypto
         run: |
-          sudo -u libpqcrypto sh -c 'cd /home/libpqcrypto/libpqcrypto-$version && ./do'
+          sudo -u libpqcrypto sh -c "cd /home/libpqcrypto/libpqcrypto-$version && ./do"
 
       - name: Create tarball of compiled code
         if: success()
