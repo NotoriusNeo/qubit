@@ -10,25 +10,22 @@ jobs:
       - name: Install required packages
         run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev libgmp-dev python3
 
-      - name: Create libpqcrypto user
-        run: sudo adduser --disabled-password --gecos libpqcrypto libpqcrypto
-
       - name: Download and unpack libpqcrypto
         run: |
           version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
           curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
-          sudo -u libpqcrypto tar xf libpqcrypto-$version.tar.gz -C /home/libpqcrypto/
-          sudo -u libpqcrypto ln -s /home/libpqcrypto/libpqcrypto-$version /home/libpqcrypto/link-build
-          sudo -u libpqcrypto ln -s /home/libpqcrypto/libpqcrypto-$version /home/libpqcrypto/link-install
+          tar xf libpqcrypto-$version.tar.gz -C ~
+          cd libpqcrypto-$version
+          ln -s $HOME link-build link-install
 
       - name: Compile, test, and install libpqcrypto
         run: |
-          sudo -u libpqcrypto sh -c "cd /home/libpqcrypto/libpqcrypto-$version && ./do"
+          ./do
 
       - name: Create tarball of compiled code
         if: success()
         run: |
-          tar -czf libpqcrypto-$version.tar.gz /home/libpqcrypto/libpqcrypto-$version
+          tar -czf libpqcrypto-$version.tar.gz ~/libpqcrypto-$version
           mv libpqcrypto-$version.tar.gz ${{ github.workspace }}
 
       - name: Upload compiled code as artifact
