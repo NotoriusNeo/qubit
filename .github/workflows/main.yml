@@ -15,10 +15,11 @@ jobs:
           cd $HOME
           version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
           curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
-          tar -xvf libpqcrypto-$version.tar.gz
+          tar -xf libpqcrypto-$version.tar.gz
           ln -s libpqcrypto-$version link-build
           ln -s libpqcrypto-$version link-install
-          sh libpqcrypto-$version/do
+          cd libpqcrypto-$version
+          sh build && sh test && sh upgrade && sh pythoncache
 
       - name: Create tarball of compiled code
         if: success()
