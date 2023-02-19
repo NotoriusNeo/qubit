@@ -10,16 +10,13 @@ jobs:
       - name: Install required packages
         run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev libgmp-dev python3
 
-      - name: Download and unpack libpqcrypto
+      - name: Download / unpack and build libpqcrypto
         run: |
           version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
           curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
           tar xf libpqcrypto-$version.tar.gz -C $HOME
           ln -s $HOME/libpqcrypto-$version $HOME/link-build
           ln -s $HOME/libpqcrypto-$version $HOME/link-install
-
-      - name: Compile, test, and install libpqcrypto
-        run: |
           sh $HOME/libpqcrypto-$version/do
 
       - name: Create tarball of compiled code
