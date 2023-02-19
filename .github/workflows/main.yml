@@ -19,7 +19,7 @@ jobs:
           ln -s libpqcrypto-$version link-build
           ln -s libpqcrypto-$version link-install
           cd libpqcrypto-$version
-          sh build && sh test && sh upgrade && sh pythoncache
+          ./do
 
       - name: Create tarball of compiled code
         if: success()
