@@ -12,17 +12,19 @@ jobs:
 
       - name: Download / unpack and build libpqcrypto
         run: |
+          cd $HOME
           version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
           curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
-          tar xf libpqcrypto-$version.tar.gz -C $HOME
-          ln -s $HOME/libpqcrypto-$version $HOME/link-build
-          ln -s $HOME/libpqcrypto-$version $HOME/link-install
-          sh $HOME/libpqcrypto-$version/do
+          tar -xvf libpqcrypto-$version.tar.gz
+          ln -s libpqcrypto-$version link-build
+          ln -s libpqcrypto-$version link-install
+          sh libpqcrypto-$version/do
 
       - name: Create tarball of compiled code
         if: success()
         run: |
-          tar -czf libpqcrypto-$version.tar.gz ~/libpqcrypto-$version
+          version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
+          tar -czf libpqcrypto-$version.tar.gz $HOME/libpqcrypto-$version
           mv libpqcrypto-$version.tar.gz ${{ github.workspace }}
 
       - name: Upload compiled code as artifact
