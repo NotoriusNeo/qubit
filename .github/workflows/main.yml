@@ -12,13 +12,11 @@ jobs:
 
       - name: Download and unpack libpqcrypto
         run: |
-          wget -m https://libpqcrypto.org/libpqcrypto-latest-version.txt
-          version=$(cat libpqcrypto.org/libpqcrypto-latest-version.txt)
-          wget -m https://libpqcrypto.org/libpqcrypto-$version.tar.gz
-          tar -xzf libpqcrypto-$version.tar.gz
-          cd libpqcrypto-$version
-          ln -s $HOME link-build
-          ln -s $HOME link-install
+          version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
+          curl -LO https://libpqcrypto.org/libpqcrypto-$version.tar.gz
+          tar xf libpqcrypto-$version.tar.gz -C $HOME
+          ln -s $HOME/libpqcrypto-$version $HOME/link-build
+          ln -s $HOME/libpqcrypto-$version $HOME/link-install
 
       - name: Compile, test, and install libpqcrypto
         run: |
