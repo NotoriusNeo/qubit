@@ -20,7 +20,7 @@ jobs:
 
       - name: Compile, test, and install libpqcrypto
         run: |
-          ./do
+          sh $HOME/libpqcrypto-$version/do
 
       - name: Create tarball of compiled code
         if: success()
