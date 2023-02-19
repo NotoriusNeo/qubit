@@ -14,7 +14,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev libgmp-dev python3
       
       - name: Get latest version
-        run: echo "::set-env name=version::$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)"
+        run: echo "version=$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)" >> $GITHUB_ENV
 
       - name: Download / unpack and build libpqcrypto
         run: |
