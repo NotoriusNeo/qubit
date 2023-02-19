@@ -15,7 +15,7 @@ jobs:
           wget -m https://libpqcrypto.org/libpqcrypto-latest-version.txt
           version=$(cat libpqcrypto.org/libpqcrypto-latest-version.txt)
           wget -m https://libpqcrypto.org/libpqcrypto-$version.tar.gz
-          tar -xzf libpqcrypto.org/libpqcrypto-$version.tar.gz
+          tar -xzf libpqcrypto-$version.tar.gz
           cd libpqcrypto-$version
           ln -s $HOME link-build
           ln -s $HOME link-install
