@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   
 env:
-  version: $(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)
+  version: ''
 
 jobs:
   build-and-test:
@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Install required packages
         run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev libgmp-dev python3
+      
+      - name: Get latest version
+        run: echo "::set-env name=version::$(curl -s https://libpqcrypto.org/libpqcrypto-latest-version.txt)"
 
       - name: Download / unpack and build libpqcrypto
         run: |
